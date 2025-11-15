@@ -182,15 +182,6 @@ export default function UploadPanel({ user }: any) {
     });
   };
 
-  const handleEditorCancel = () => {
-    setShowEditor(false);
-    setEditedImageUrl(croppedImageUrl);
-    setStatus({
-      type: 'info',
-      message: '已跳过编辑，可以直接上传',
-    });
-  };
-
   const handleUpload = async () => {
     if (!editedImageUrl || !selectedFile) {
       setStatus({ type: 'error', message: '请先完成编辑' });
@@ -299,7 +290,6 @@ export default function UploadPanel({ user }: any) {
         <ImageEditor
           imageDataUrl={croppedImageUrl}
           onComplete={handleEditorComplete}
-          onCancel={handleEditorCancel}
         />
       )}
 

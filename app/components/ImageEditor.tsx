@@ -23,10 +23,9 @@ const INITIAL_ZOOM = Math.min(
 interface ImageEditorProps {
   imageDataUrl: string;
   onComplete: (editedImageDataUrl: string) => void;
-  onCancel: () => void;
 }
 
-export default function ImageEditor({ imageDataUrl, onComplete, onCancel }: ImageEditorProps) {
+export default function ImageEditor({ imageDataUrl, onComplete }: ImageEditorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -352,7 +351,7 @@ export default function ImageEditor({ imageDataUrl, onComplete, onCancel }: Imag
         <div className="p-4">
           <div className="space-y-4">
             {/* 工具按钮 */}
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex gap-2 justify-center flex-nowrap overflow-x-auto">
               <wired-button
                 elevation={mode === 'draw' ? 2 : 0}
                 onClick={() => setMode(mode === 'draw' ? 'view' : 'draw')}
@@ -440,12 +439,9 @@ export default function ImageEditor({ imageDataUrl, onComplete, onCancel }: Imag
       </wired-card>
 
       {/* 操作按钮 */}
-      <div className="flex gap-3 flex-wrap">
-        <wired-button onClick={handleComplete} style={{ flex: 1 }}>
-          完成编辑
-        </wired-button>
-        <wired-button onClick={onCancel} style={{ flex: 1 }}>
-          跳过编辑
+      <div className="flex justify-center mt-4">
+        <wired-button onClick={handleComplete} style={{ minWidth: '180px' }}>
+          完成
         </wired-button>
       </div>
     </div>
