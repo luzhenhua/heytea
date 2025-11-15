@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import ImageCropper from './ImageCropper';
 import ImageEditor from './ImageEditor';
-import { uploadImage } from '@/lib/api';
+import { loginByToken, uploadImage } from '@/lib/api';
 import { generateUploadSign } from '@/lib/crypto';
 import { normalizeToken } from '@/lib/token';
 import { compressImage } from '@/lib/image';
@@ -12,6 +12,15 @@ import type { Area } from 'react-easy-crop';
 const IMAGE_CONFIG = {
   TARGET_WIDTH: 596,
   TARGET_HEIGHT: 832,
+};
+const DEFAULT_SESSION_MESSAGE = '登录状态已失效，请重新登录';
+const getFriendlySessionMessage = (message?: string) => {
+  if (!message) return DEFAULT_SESSION_MESSAGE;
+  const upper = message.toUpperCase();
+  if (upper === 'TOKEN_INVALID' || upper.includes('TOKEN')) {
+    return DEFAULT_SESSION_MESSAGE;
+  }
+  return message;
 };
 
 function createCanvas(width: number, height: number) {
@@ -83,7 +92,12 @@ async function buildCompressedFile(dataUrl: string, fileBaseName: string) {
   };
 }
 
-export default function UploadPanel({ user }: any) {
+type UploadPanelProps = {
+  user: any;
+  onSessionExpired?: (message?: string) => void;
+};
+
+export default function UploadPanel({ user, onSessionExpired }: UploadPanelProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [processedImageUrl, setProcessedImageUrl] = useState<string | null>(null);
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
@@ -183,13 +197,40 @@ export default function UploadPanel({ user }: any) {
     });
   };
 
+  const getErrorMessage = (detail: any, fallback?: string) => {
+    if (!detail) return fallback;
+    if (typeof detail === 'string') return detail;
+    return detail.message || detail.msg || fallback;
+  };
+
   const handleUpload = async () => {
     if (!editedImageUrl || !selectedFile) {
       setStatus({ type: 'error', message: '请先完成编辑' });
       return;
     }
 
+    const sanitizedToken = normalizeToken(user.token);
+    if (!sanitizedToken) {
+      const message = '登录信息缺失，请重新登录';
+      setStatus({ type: 'error', message });
+      onSessionExpired?.(message);
+      return;
+    }
+
     try {
+      setStatus({ type: 'info', message: '验证登录状态中...' });
+      try {
+        const verifyResult = await loginByToken(sanitizedToken);
+        if (verifyResult.code !== 0 || !verifyResult.data) {
+          const message = getFriendlySessionMessage(verifyResult.message);
+          setStatus({ type: 'error', message });
+          onSessionExpired?.(message);
+          return;
+        }
+      } catch (error) {
+        console.warn('无法验证登录状态:', error);
+      }
+
       setStatus({ type: 'info', message: '压缩图片中...' });
 
       const { sign, t } = generateUploadSign(user.id);
@@ -202,7 +243,6 @@ export default function UploadPanel({ user }: any) {
       formData.append('cropArea', JSON.stringify({ x: 0, y: 0, width: IMAGE_CONFIG.TARGET_WIDTH, height: IMAGE_CONFIG.TARGET_HEIGHT }));
       formData.append('width', IMAGE_CONFIG.TARGET_WIDTH.toString());
       formData.append('height', IMAGE_CONFIG.TARGET_HEIGHT.toString());
-      const sanitizedToken = normalizeToken(user.token);
       const bearerToken = sanitizedToken ? `Bearer ${sanitizedToken}` : '';
       formData.append('sign', sign);
       formData.append('t', t.toString());
@@ -219,9 +259,29 @@ export default function UploadPanel({ user }: any) {
         setTimeout(() => {
           handleClear();
         }, 3000);
-      } else {
-        setStatus({ type: 'error', message: result.message || '上传失败，请重试' });
+        return;
       }
+
+      const detailMessage = getErrorMessage(result.detail, result.message);
+      const combinedMessage = detailMessage || result.message || '';
+      const lowerCombined = combinedMessage.toLowerCase();
+      const isUnauthorized =
+        result.status === 401 ||
+        result.status === '401' ||
+        result.detail?.status === 401 ||
+        result.detail?.code === 401 ||
+        result.detail?.code === '401' ||
+        combinedMessage.includes('登录') ||
+        lowerCombined.includes('token');
+
+      if (isUnauthorized) {
+        const message = getFriendlySessionMessage(combinedMessage);
+        setStatus({ type: 'error', message });
+        onSessionExpired?.(message);
+        return;
+      }
+
+      setStatus({ type: 'error', message: result.message || '上传失败，请重试' });
     } catch (error: any) {
       console.error('上传错误:', error);
       const errorMessage = error.message || '网络连接失败，请检查网络后重试';

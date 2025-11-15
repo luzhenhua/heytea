@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { normalizeToken } from '@/lib/token';
+import { loginByToken } from '@/lib/api';
 
 const LoginPanel = dynamic(() => import('./components/LoginPanel'), { ssr: false });
 const UploadPanel = dynamic(() => import('./components/UploadPanel'), { ssr: false });
@@ -11,6 +12,17 @@ export default function Home() {
   const [user, setUser] = useState<any>(null);
   const [loaded, setLoaded] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [sessionAlert, setSessionAlert] = useState<string | null>(null);
+  const getSessionExpiredMessage = (message?: string) => {
+    if (!message) return '登录状态已失效，请重新登录';
+    if (message.toUpperCase() === 'TOKEN_INVALID') {
+      return '登录状态已失效，请重新登录';
+    }
+    if (message.toLowerCase().includes('token')) {
+      return '登录状态已失效，请重新登录';
+    }
+    return message;
+  };
 
   useEffect(() => {
     // 动态导入 wired-elements
@@ -47,10 +59,65 @@ export default function Home() {
     setUser(normalizedUser);
     if (normalizedUser) {
       localStorage.setItem('heyteaUser', JSON.stringify(normalizedUser));
+      setSessionAlert(null);
     } else {
       localStorage.removeItem('heyteaUser');
     }
     setShowDetails(false);
+  };
+
+  useEffect(() => {
+    if (!user?.token) return;
+
+    let canceled = false;
+    let checking = false;
+
+    const runCheck = async () => {
+      if (checking || !user?.token) return;
+      checking = true;
+      try {
+        const result = await loginByToken(user.token);
+        if (canceled) return;
+
+        if (result.code !== 0 || !result.data) {
+          const message = getSessionExpiredMessage(result.message);
+          handleSetUser(null);
+          setSessionAlert(message);
+        }
+      } catch (error) {
+        console.error('登录状态检查失败:', error);
+      } finally {
+        checking = false;
+      }
+    };
+
+    runCheck();
+
+    const handleFocus = () => {
+      runCheck();
+    };
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        runCheck();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibility);
+    const intervalId = window.setInterval(runCheck, 60000);
+
+    return () => {
+      canceled = true;
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.clearInterval(intervalId);
+    };
+  }, [user?.token]);
+
+  const handleSessionExpired = (message?: string) => {
+    handleSetUser(null);
+    setSessionAlert(getSessionExpiredMessage(message));
   };
 
   // 手机号打码
@@ -77,6 +144,22 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold mb-2">喜茶Diy杯贴</h1>
         </div>
 
+        <div className="mb-6 animate-fade-in">
+          <wired-card elevation="2">
+            <div className="p-4 text-center space-y-3">
+              <p className="text-base font-semibold text-gray-800">
+                第一次使用？建议用 1 分钟先看看常见问题，很多坑都写好了。
+              </p>
+              <p className="text-sm text-gray-600">
+                里面有验证码异常、上传次数限制、浏览器兼容等说明，可以省去来回折腾的功夫。
+              </p>
+              <wired-button onClick={() => (window.location.href = '/faq')}>
+                浏览常见问题
+              </wired-button>
+            </div>
+          </wired-card>
+        </div>
+
         {/* 登录区域 */}
         {!user && (
           <div className="section-spacing animate-fade-in">
@@ -101,7 +184,10 @@ export default function Home() {
                       {showDetails ? '收起' : '详情'}
                     </wired-button>
                     <wired-button
-                      onClick={() => handleSetUser(null)}
+                      onClick={() => {
+                        handleSetUser(null);
+                        setSessionAlert(null);
+                      }}
                     >
                       退出
                     </wired-button>
@@ -126,10 +212,20 @@ export default function Home() {
           </div>
         )}
 
+        {sessionAlert && (
+          <div className="mb-6 animate-fade-in">
+            <wired-card elevation="2">
+              <div className="p-4 text-center text-red-600 font-semibold">
+                {sessionAlert}
+              </div>
+            </wired-card>
+          </div>
+        )}
+
         {/* 上传区域 - 核心区域 */}
         {user && (
           <div className="section-spacing animate-fade-in">
-            <UploadPanel user={user} />
+            <UploadPanel user={user} onSessionExpired={handleSessionExpired} />
           </div>
         )}
 
