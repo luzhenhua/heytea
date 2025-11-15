@@ -144,17 +144,17 @@ export default function LoginPanel({ setUser }: any) {
 
           <div>
             <label className="block mb-2 font-semibold">验证码</label>
-            <div className="flex gap-2 flex-wrap items-center">
+            <div className="flex gap-2 items-center">
               <wired-input
                 placeholder="验证码"
                 value={code}
                 onInput={(e: any) => setCode(e.target.value)}
-                style={{ flex: 1, minWidth: '150px' }}
+                style={{ flex: 1, minWidth: '0' }}
               />
               <wired-button
                 onClick={handleGetCode}
                 disabled={countdown > 0}
-                style={{ minWidth: '120px' }}
+                style={{ width: '110px' }}
               >
                 {countdown > 0 ? `${countdown}s` : '获取'}
               </wired-button>
