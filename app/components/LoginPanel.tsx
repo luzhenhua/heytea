@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { loginByPhone, loginByToken, sendVerifyCode } from '@/lib/api';
 import { encryptPhone } from '@/lib/crypto';
+import { normalizeToken } from '@/lib/token';
 
 export default function LoginPanel({ setUser }: any) {
   const [loginMethod, setLoginMethod] = useState<'phone' | 'token'>('phone');
@@ -62,7 +63,7 @@ export default function LoginPanel({ setUser }: any) {
           name: result.data.nickName || result.data.name || '-',
           phone: phone,
           id: result.data.userMainId || result.data.id || '-',
-          token: result.data.token || '-',
+          token: normalizeToken(result.data.token) || '-',
         };
         setUser(userData);
         setStatus({ type: 'success', message: '登录成功！' });
@@ -82,14 +83,15 @@ export default function LoginPanel({ setUser }: any) {
 
     try {
       setStatus({ type: 'info', message: '验证中...' });
-      const result = await loginByToken(token);
+      const sanitizedToken = normalizeToken(token);
+      const result = await loginByToken(sanitizedToken);
 
       if (result.code === 0 && result.data) {
         const userData = {
           name: result.data.name || result.data.nickName || '-',
           phone: result.data.phone || '-',
           id: result.data.user_main_id || result.data.userMainId || result.data.id || '-',
-          token: token,
+          token: sanitizedToken,
         };
         setUser(userData);
         setStatus({ type: 'success', message: 'Token验证成功！' });

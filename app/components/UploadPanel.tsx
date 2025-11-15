@@ -5,6 +5,7 @@ import ImageCropper from './ImageCropper';
 import ImageEditor from './ImageEditor';
 import { uploadImage } from '@/lib/api';
 import { generateUploadSign } from '@/lib/crypto';
+import { normalizeToken } from '@/lib/token';
 import { compressImage } from '@/lib/image';
 import type { Area } from 'react-easy-crop';
 
@@ -201,9 +202,11 @@ export default function UploadPanel({ user }: any) {
       formData.append('cropArea', JSON.stringify({ x: 0, y: 0, width: IMAGE_CONFIG.TARGET_WIDTH, height: IMAGE_CONFIG.TARGET_HEIGHT }));
       formData.append('width', IMAGE_CONFIG.TARGET_WIDTH.toString());
       formData.append('height', IMAGE_CONFIG.TARGET_HEIGHT.toString());
+      const sanitizedToken = normalizeToken(user.token);
+      const bearerToken = sanitizedToken ? `Bearer ${sanitizedToken}` : '';
       formData.append('sign', sign);
       formData.append('t', t.toString());
-      formData.append('token', `Bearer ${user.token}`);
+      formData.append('token', bearerToken);
 
       const result = await uploadImage(formData);
 

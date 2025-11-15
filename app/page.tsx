@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { normalizeToken } from '@/lib/token';
 
 const LoginPanel = dynamic(() => import('./components/LoginPanel'), { ssr: false });
 const UploadPanel = dynamic(() => import('./components/UploadPanel'), { ssr: false });
@@ -21,7 +22,11 @@ export default function Home() {
     const savedUser = localStorage.getItem('heyteaUser');
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        const parsed = JSON.parse(savedUser);
+        if (parsed) {
+          parsed.token = normalizeToken(parsed.token);
+        }
+        setUser(parsed);
       } catch (e) {
         localStorage.removeItem('heyteaUser');
       }
@@ -36,9 +41,12 @@ export default function Home() {
 
   // 保存用户信息到 localStorage
   const handleSetUser = (userData: any) => {
-    setUser(userData);
-    if (userData) {
-      localStorage.setItem('heyteaUser', JSON.stringify(userData));
+    const normalizedUser = userData
+      ? { ...userData, token: normalizeToken(userData.token) }
+      : null;
+    setUser(normalizedUser);
+    if (normalizedUser) {
+      localStorage.setItem('heyteaUser', JSON.stringify(normalizedUser));
     } else {
       localStorage.removeItem('heyteaUser');
     }
