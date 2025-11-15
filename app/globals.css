@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 16px;
+  line-height: 1.8;
+  background: #fcfaf6;
+}
+
+/* Wired Elements 基础样式 */
+wired-card {
+  display: block;
+  font-family: inherit;
+}
+
+wired-input {
+  font-family: inherit;
+  display: block;
+  width: 100%;
+  min-height: 40px;
+}
+
+wired-button {
+  font-family: inherit;
+  cursor: pointer;
+  padding: 10px 20px;
+  min-height: 40px;
+}
+
+wired-button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 确保输入框可见 */
+wired-input input {
+  font-family: inherit !important;
+  font-size: 16px !important;
+}
+
+/* 简单动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 基础布局 */
+.section-spacing {
+  margin-bottom: 40px;
+}
+
+/* Wired Slider 样式 */
+wired-slider {
+  width: 100%;
+  display: block;
+  --wired-slider-knob-color: #000;
+  --wired-slider-bar-color: #666;
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+
+  .section-spacing {
+    margin-bottom: 24px;
+  }
+
+  wired-button {
+    width: 100%;
+  }
+
+  wired-card {
+    border-radius: 18px;
+  }
+}
