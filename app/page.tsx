@@ -28,6 +28,12 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    if (user && typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [user]);
+
   // 保存用户信息到 localStorage
   const handleSetUser = (userData: any) => {
     setUser(userData);
