@@ -144,13 +144,6 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold mb-2">喜茶Diy杯贴</h1>
         </div>
 
-        {/* 登录区域 */}
-        {!user && (
-          <div className="section-spacing animate-fade-in">
-            <LoginPanel setUser={handleSetUser} />
-          </div>
-        )}
-
         <div className="mb-6 animate-fade-in">
           <wired-card elevation="2">
             <div className="p-4 text-center space-y-3">
@@ -166,6 +159,13 @@ export default function Home() {
             </div>
           </wired-card>
         </div>
+
+        {/* 登录区域 */}
+        {!user && (
+          <div className="section-spacing animate-fade-in">
+            <LoginPanel setUser={handleSetUser} />
+          </div>
+        )}
 
         {/* 用户信息 - 紧凑模式 */}
         {user && (
