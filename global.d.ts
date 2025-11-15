@@ -1,6 +1,8 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
-type WiredElementProps = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>;
+type WiredElementProps = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
+  [key: string]: any;
+};
 
 declare global {
   namespace JSX {
@@ -9,6 +11,7 @@ declare global {
       'wired-button': WiredElementProps;
       'wired-input': WiredElementProps;
       'wired-slider': WiredElementProps;
+      'wired-textarea': WiredElementProps;
     }
   }
 }
