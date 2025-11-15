@@ -84,7 +84,7 @@ export default function ImageCropper({ file, imageUrl: providedImageUrl, onCompl
         />
       </div>
 
-      <div className="flex gap-3 flex-col sm:flex-row">
+      <div className="flex gap-3 flex-wrap">
         <wired-button
           onClick={handleConfirm}
           style={{ flex: 1 }}

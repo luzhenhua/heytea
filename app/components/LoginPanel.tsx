@@ -114,7 +114,7 @@ export default function LoginPanel({ setUser }: any) {
       <h2 className="text-2xl font-bold mb-6">登录</h2>
 
       {/* 登录方式切换 */}
-      <div className="flex gap-3 flex-col sm:flex-row mb-6">
+      <div className="flex flex-wrap gap-3 mb-6">
         <wired-button
           onClick={() => setLoginMethod('phone')}
           elevation={loginMethod === 'phone' ? 2 : 0}
@@ -144,16 +144,17 @@ export default function LoginPanel({ setUser }: any) {
 
           <div>
             <label className="block mb-2 font-semibold">验证码</label>
-            <div className="flex gap-2 flex-col sm:flex-row items-start sm:items-center">
+            <div className="flex gap-2 flex-wrap items-center">
               <wired-input
                 placeholder="验证码"
                 value={code}
                 onInput={(e: any) => setCode(e.target.value)}
-                style={{ flex: 1, width: '100%' }}
+                style={{ flex: 1, minWidth: '150px' }}
               />
               <wired-button
                 onClick={handleGetCode}
                 disabled={countdown > 0}
+                style={{ minWidth: '120px' }}
               >
                 {countdown > 0 ? `${countdown}s` : '获取'}
               </wired-button>

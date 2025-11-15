@@ -440,7 +440,7 @@ export default function ImageEditor({ imageDataUrl, onComplete, onCancel }: Imag
       </wired-card>
 
       {/* 操作按钮 */}
-      <div className="flex gap-3 flex-col sm:flex-row">
+      <div className="flex gap-3 flex-wrap">
         <wired-button onClick={handleComplete} style={{ flex: 1 }}>
           完成编辑
         </wired-button>

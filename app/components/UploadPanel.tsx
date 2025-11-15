@@ -319,7 +319,7 @@ export default function UploadPanel({ user }: any) {
           </wired-card>
 
           {/* 按钮在下方 */}
-          <div className="flex gap-3 flex-col sm:flex-row">
+          <div className="flex gap-3 flex-wrap">
             <wired-button onClick={handleUpload} style={{ flex: 1 }}>
               开始上传
             </wired-button>
