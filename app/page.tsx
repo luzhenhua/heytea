@@ -144,6 +144,13 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold mb-2">喜茶Diy杯贴</h1>
         </div>
 
+        {/* 登录区域 */}
+        {!user && (
+          <div className="section-spacing animate-fade-in">
+            <LoginPanel setUser={handleSetUser} />
+          </div>
+        )}
+
         <div className="mb-6 animate-fade-in">
           <wired-card elevation="2">
             <div className="p-4 text-center space-y-3">
@@ -159,13 +166,6 @@ export default function Home() {
             </div>
           </wired-card>
         </div>
-
-        {/* 登录区域 */}
-        {!user && (
-          <div className="section-spacing animate-fade-in">
-            <LoginPanel setUser={handleSetUser} />
-          </div>
-        )}
 
         {/* 用户信息 - 紧凑模式 */}
         {user && (
@@ -229,32 +229,48 @@ export default function Home() {
           </div>
         )}
 
-        {/* 页脚 */}
-        <div className="text-center text-sm text-gray-500 mt-12 space-y-2">
-          <p>喜茶DIY © {new Date().getFullYear()} | 仅供测试使用 | 非官方工具</p>
-          <p>
-            由{' '}
-            <a
-              href="https://www.luzhenhua.cn/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              卢振华
-            </a>{' '}
-            制作
-          </p>
-          <p>
-            <a
-              href="https://github.com/luzhenhua/heytea"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline font-semibold"
-            >
-              GitHub
-            </a>
-          </p>
+        <div className="mt-12 animate-fade-in">
+          <wired-card elevation="3">
+            <div className="p-5 text-center space-y-4" style={{ background: '#fff7ed', borderRadius: '12px' }}>
+              <div className="space-y-2">
+                <p className="text-lg font-semibold text-orange-800">温馨声明</p>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  喜茶 App 只能手绘上传，让很多不会画画的朋友很为难。我只是一个普通开发者（
+                  <a
+                    href="https://www.luzhenhua.cn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-semibold text-orange-700"
+                  >
+                    卢振华
+                  </a>
+                  ）想帮大家把喜欢的照片或图案也能贴到杯子上，于是做了这个完全公益的小工具，与喜茶官方没有任何运营关系。
+                </p>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  网站不会存储任何个人信息，所有代码都公开在
+                  {' '}
+                  <a
+                    href="https://github.com/luzhenhua/heytea"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-semibold text-orange-700"
+                  >
+                    GitHub
+                  </a>
+                  ，欢迎检查。如果这个项目无意影响到您的权益，请发邮件到
+                  {' '}
+                  <a href="mailto:luzhenhuadev@qq.com" className="underline text-gray-800">
+                    luzhenhuadev@qq.com
+                  </a>
+                  ，我会第一时间处理。
+                </p>
+              </div>
+            </div>
+          </wired-card>
         </div>
+
+        {/* 页脚 */}
+        <div className="h-8" />
       </div>
     </main>
   );
