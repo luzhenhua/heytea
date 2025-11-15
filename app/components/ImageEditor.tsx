@@ -178,6 +178,7 @@ export default function ImageEditor({ imageDataUrl, onComplete, onCancel }: Imag
     setTimeout(() => {
       // 导出为图片，使用适中的质量以减小文件大小
       const dataUrl = canvas.toDataURL({
+        multiplier: 1,
         format: 'png',
         quality: 0.8, // 降低质量以减小文件大小
       });
