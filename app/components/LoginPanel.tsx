@@ -164,6 +164,7 @@ export default function LoginPanel({ setUser }: any) {
           <div className="flex justify-center">
             <wired-button
               onClick={handlePhoneLogin}
+              style={{ minWidth: '180px' }}
             >
               登录
             </wired-button>
@@ -184,6 +185,7 @@ export default function LoginPanel({ setUser }: any) {
           <div className="flex justify-center">
             <wired-button
               onClick={handleTokenLogin}
+              style={{ minWidth: '180px' }}
             >
               验证
             </wired-button>
