@@ -133,13 +133,18 @@ export default function LoginPanel({ setUser }: any) {
 
       {loginMethod === 'phone' ? (
         <div className="space-y-4">
-          <div>
+          <div className="space-y-3">
             <label className="block mb-2 font-semibold">手机号</label>
             <wired-input
               placeholder="请输入手机号"
               value={phone}
               onInput={(e: any) => setPhone(e.target.value)}
             />
+            <wired-card elevation="1">
+              <div className="p-3 text-sm leading-relaxed text-gray-600">
+                若提示“当前版本较低，验证失败，请到应用市场下载最新版本”，这是喜茶风控造成的。请打开喜茶 App 自行获取验证码，但不要在 App 内输入该验证码，而是回到本页面填写手机号和验证码，即可完成登录。
+              </div>
+            </wired-card>
           </div>
 
           <div>
