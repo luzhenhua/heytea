@@ -133,18 +133,13 @@ export default function LoginPanel({ setUser }: any) {
 
       {loginMethod === 'phone' ? (
         <div className="space-y-4">
-          <div className="space-y-3">
+          <div>
             <label className="block mb-2 font-semibold">手机号</label>
             <wired-input
               placeholder="请输入手机号"
               value={phone}
               onInput={(e: any) => setPhone(e.target.value)}
             />
-            <wired-card elevation="1">
-              <div className="p-3 text-sm leading-relaxed text-gray-600">
-                若提示“当前版本较低，验证失败，请到应用市场下载最新版本”，这是喜茶风控造成的。请打开喜茶 App 自行获取验证码，但不要在 App 内输入该验证码，而是回到本页面填写手机号和验证码，即可完成登录。
-              </div>
-            </wired-card>
           </div>
 
           <div>
@@ -200,7 +195,7 @@ export default function LoginPanel({ setUser }: any) {
 
       {/* 状态消息 */}
       {status && (
-        <div className="mt-4">
+        <div className="mt-4 space-y-2">
           <wired-card elevation="1">
             <div className="p-3 text-center">
               <p className="font-semibold">
@@ -208,6 +203,13 @@ export default function LoginPanel({ setUser }: any) {
               </p>
             </div>
           </wired-card>
+          {status.message?.includes('当前版本较低，验证失败，请到应用市场下载最新版本') && (
+            <wired-card elevation="1">
+              <div className="p-3 text-sm leading-relaxed text-gray-600 text-left">
+                该提示来自喜茶的风控校验。请先在喜茶 App 内获取验证码，但不要在 App 中提交，返回本页面输入手机号和验证码即可完成登录。
+              </div>
+            </wired-card>
+          )}
         </div>
       )}
     </wired-card>
