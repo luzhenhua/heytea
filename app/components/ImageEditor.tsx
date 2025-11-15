@@ -351,20 +351,23 @@ export default function ImageEditor({ imageDataUrl, onComplete }: ImageEditorPro
         <div className="p-4">
           <div className="space-y-4">
             {/* 工具按钮 */}
-            <div className="flex gap-2 justify-center flex-nowrap overflow-x-auto">
+            <div className="flex gap-3 justify-center flex-nowrap overflow-x-auto">
               <wired-button
                 elevation={mode === 'draw' ? 2 : 0}
                 onClick={() => setMode(mode === 'draw' ? 'view' : 'draw')}
+                style={{ minWidth: '90px', whiteSpace: 'nowrap' }}
               >
-                {mode === 'draw' ? '退出手绘' : '开启手绘'}
+                {mode === 'draw' ? '退出手绘' : '手绘'}
               </wired-button>
               <wired-button
                 onClick={handleAddText}
+                style={{ minWidth: '90px', whiteSpace: 'nowrap' }}
               >
-                添加文字
+                文字
               </wired-button>
               <wired-button
                 onClick={handleUndo}
+                style={{ minWidth: '90px', whiteSpace: 'nowrap' }}
               >
                 撤销
               </wired-button>
