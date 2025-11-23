@@ -85,13 +85,25 @@ wired-slider {
   --wired-slider-bar-color: #666;
 }
 
+.announcement-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 16px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
 .announcement-card {
   padding: 0;
   background: transparent;
   border-radius: 0;
   box-shadow: none;
-  width: min(560px, 100%);
-  margin: 0 auto;
+  width: min(560px, calc(100vw - 32px));
+  margin: 16px auto;
 }
 
 .announcement-body {
@@ -131,6 +143,21 @@ wired-slider {
 .announcement-body > * {
   position: relative;
   z-index: 1;
+}
+
+.announcement-content {
+  max-height: min(640px, calc(100vh - 160px));
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.announcement-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.announcement-content::-webkit-scrollbar-thumb {
+  background: rgba(43, 33, 23, 0.3);
+  border-radius: 999px;
 }
 
 .announcement-tape {
@@ -193,5 +220,32 @@ wired-slider {
 
   wired-card {
     border-radius: 18px;
+  }
+
+  .announcement-overlay {
+    align-items: flex-start;
+    padding-top: calc(24px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .announcement-card {
+    width: calc(100vw - 24px);
+    margin: 0 auto;
+    border-radius: 0;
+  }
+
+  .announcement-body {
+    padding: 28px 20px 24px;
+  }
+
+  .announcement-content {
+    max-height: calc(100vh - 140px);
+  }
+}
+
+@media (min-width: 768px) {
+  .announcement-overlay {
+    align-items: center;
+    padding: 48px;
   }
 }

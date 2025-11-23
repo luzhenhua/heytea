@@ -145,7 +145,7 @@ export default function Home() {
   return (
     <>
       {showAnnouncement && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
+        <div className="announcement-overlay animate-fade-in">
           <div className="absolute inset-0 bg-black/40" />
           <wired-card
             elevation="3"
@@ -154,51 +154,53 @@ export default function Home() {
           >
             <div className="announcement-body text-left">
               <div className="announcement-tape" aria-hidden="true" />
-              <div className="announcement-header">
-                <p className="text-2xl font-bold text-orange-900 mb-2">想对你说的话</p>
-                <p className="announcement-meta">很抱歉总要用这种方式打扰你，但我想先让你知道真相</p>
-              </div>
-              <div className="announcement-paragraphs text-sm text-gray-800">
-                <p>
-                  喜茶把我们借用的上传通道彻底锁住了，所以现在一按上传就会跳出
-                  <span className="font-semibold text-red-700">“检测到非法的上传请求，本次操作已被拦截。”</span>
-                  这句提示完全来自喜茶的风控，他们阻止的是接口本身，不是你，也不是这个小站。
-                </p>
-                <p>
-                  我把空闲时间都用来尝试各种办法，偶尔靠运气能冲过去，可大多数时候仍旧被挡下。想到你满怀期待地点开按钮却被这句话泼冷水，心里真的会跟着揪起来。
-                </p>
-                <p>
-                  如果你已经重试很多次，先深呼吸一下，别把责任揽在自己身上。限制来自喜茶，我无法帮你绕开，但可以陪你一起等待那一点点好运气。
-                </p>
-                <p>
-                  我只是一个喜欢写代码的学生，平时也要上课，但空下来就会把这个按钮守好。能够陪伴大家我已经很幸运，没帮上的也请别失望，我们一起慢慢等那次能顺利贴上喜欢的图案。
-                </p>
-                <p>
-                  如果你脑子里有一些小创意，暂时没有人帮你做成 App 或网页，也欢迎来找我，可以在{' '}
-                  <a
-                    href="https://www.xiaohongshu.com/user/profile/6554bb560000000002035357"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline text-orange-800"
-                  >
-                    小红书
-                  </a>
-                  或{' '}
-                  <a
-                    href="https://www.douyin.com/user/MS4wLjABAAAAe_UbKX_yOC03iIH10AmzlJJSnt_O0CecI1naUtR5qjNKNKd4Gqg8Hw1tyOfeHRLA?from_tab_name=main"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline text-orange-800"
-                  >
-                    抖音
-                  </a>
-                  上联系我。周一到周五我在学校上课，回复会慢一些，但我会尽力帮助每一位朋友。
-                </p>
-              </div>
-              <div className="announcement-action pt-4">
-                <wired-button onClick={handleDismissAnnouncement}>
-                  收到拥抱，再试试看
-                </wired-button>
+              <div className="announcement-content">
+                <div className="announcement-header">
+                  <p className="text-2xl font-bold text-orange-900 mb-2">想对你说的话</p>
+                  <p className="announcement-meta">很抱歉总要用这种方式打扰你，但我想先让你知道真相</p>
+                </div>
+                <div className="announcement-paragraphs text-sm text-gray-800">
+                  <p>
+                    喜茶把我们借用的上传通道彻底锁住了，所以现在一按上传就会跳出
+                    <span className="font-semibold text-red-700">“检测到非法的上传请求，本次操作已被拦截。”</span>
+                    这句提示完全来自喜茶的风控，他们阻止的是接口本身，不是你，也不是这个小站。
+                  </p>
+                  <p>
+                    我把空闲时间都用来尝试各种办法，偶尔靠运气能冲过去，可大多数时候仍旧被挡下。想到你满怀期待地点开按钮却被这句话泼冷水，心里真的会跟着揪起来。
+                  </p>
+                  <p>
+                    如果你已经重试很多次，先深呼吸一下，别把责任揽在自己身上。限制来自喜茶，我无法帮你绕开，但可以陪你一起等待那一点点好运气。
+                  </p>
+                  <p>
+                    我只是一个喜欢写代码的学生，平时也要上课，但空下来就会把这个按钮守好。能够陪伴大家我已经很幸运，没帮上的也请别失望，我们一起慢慢等那次能顺利贴上喜欢的图案。
+                  </p>
+                  <p>
+                    如果你脑子里有一些小创意，暂时没有人帮你做成 App 或网页，也欢迎来找我，可以在{' '}
+                    <a
+                      href="https://www.xiaohongshu.com/user/profile/6554bb560000000002035357"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline text-orange-800"
+                    >
+                      小红书
+                    </a>
+                    或{' '}
+                    <a
+                      href="https://www.douyin.com/user/MS4wLjABAAAAe_UbKX_yOC03iIH10AmzlJJSnt_O0CecI1naUtR5qjNKNKd4Gqg8Hw1tyOfeHRLA?from_tab_name=main"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline text-orange-800"
+                    >
+                      抖音
+                    </a>
+                    上联系我。周一到周五我在学校上课，回复会慢一些，但我会尽力帮助每一位朋友。
+                  </p>
+                </div>
+                <div className="announcement-action pt-4">
+                  <wired-button onClick={handleDismissAnnouncement}>
+                    收到拥抱，再试试看
+                  </wired-button>
+                </div>
               </div>
             </div>
           </wired-card>
