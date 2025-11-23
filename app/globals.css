@@ -85,6 +85,99 @@ wired-slider {
   --wired-slider-bar-color: #666;
 }
 
+.announcement-card {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  width: min(560px, 100%);
+  margin: 0 auto;
+}
+
+.announcement-body {
+  position: relative;
+  padding: 38px 34px 30px;
+  line-height: 1.85;
+  overflow: visible;
+  color: #2b2117;
+}
+
+.announcement-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fffaf0;
+  border: 2px solid #2b1a11;
+  box-shadow: 10px 12px 0 rgba(29, 18, 12, 0.3);
+  transform: rotate(-0.8deg);
+  z-index: -3;
+}
+
+.announcement-body::after {
+  content: '';
+  position: absolute;
+  background: #fffaf0;
+  border: 1px dashed rgba(43, 33, 23, 0.45);
+  inset: 16px;
+  transform: rotate(0.25deg);
+  z-index: -2;
+}
+
+.announcement-body::before,
+.announcement-body::after {
+  border-radius: 6px;
+}
+
+.announcement-body > * {
+  position: relative;
+  z-index: 1;
+}
+
+.announcement-tape {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  width: 140px;
+  height: 30px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: #f3d1a2;
+  border: 1px solid #3a2416;
+  box-shadow: 3px 4px 0 rgba(30, 18, 12, 0.25);
+  opacity: 0.9;
+}
+
+.announcement-header p {
+  margin: 0;
+}
+
+.announcement-meta {
+  font-size: 0.8rem;
+  color: #a07e61;
+}
+
+.announcement-paragraphs p {
+  margin: 0;
+}
+
+.announcement-paragraphs p + p {
+  margin-top: 0.9rem;
+}
+
+.announcement-paragraphs {
+  color: #3c2a20;
+  font-size: 0.96rem;
+}
+
+.announcement-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.announcement-action wired-button {
+  font-size: 0.95rem;
+  padding: 6px 16px;
+}
+
 @media (max-width: 640px) {
   body {
     font-size: 15px;
